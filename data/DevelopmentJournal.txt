@@ -1,0 +1,23 @@
+Development Journal Day 1
+October 22nd, 2018
+
+A couple of days ago I started working on this project again after several months, I am working on turning this project into 
+a full fledged video game that I will use as part of my portfolio to show to potential employers.  The goal of this project
+is to make a fully functional old school 2D top down RPG but also to showcase my abilities to build a game engine.  The engine
+backend to this project was built with the plans to be cross platform with modules for various platforms built and added to the
+project.
+
+The goal for this week is to begin to figure out the next stages of the game, I need to get a character on screen and moving around,
+I need to get that characters movement to affect moving the world around it / make the view of the world move as they near the edge
+of what is visible to the player.  Then I also need to get the collission map working correctly and stuff like that I think that
+will be my goal for the project and then I can move on from there to other tasks.
+
+Development Journa Day 2
+October 25th, 2018
+
+I started working on User Interface stuff today trying to figure out how to make a message box that can easily change size, I worked
+on it for quite a while before I realized that making it able to grow to any size was majorly challenging because what works for some
+sizes doesn't work for other sizes.  I made the decision that I'm going to simply use a specific sized message / dialog box for the
+game but will include code for being able to have text scrolling in the box and an image for the character in the box.  But the work
+that I did for trying to grow a message box will be used for building things like an options screen, items screen and party screen
+through the use of panals.  I also figured out how to create a gradient effect with those panals.

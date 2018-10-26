@@ -1,0 +1,7 @@
+2
+..\Art\PDSGBanner.png
+APDSGLogo
+TRUE
+..\Art\DEBanner.png
+DELogo
+TRUE

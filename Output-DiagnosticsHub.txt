@@ -1,0 +1,22 @@
+﻿Profiling of 'DarcMagik' started.
+DarcMagik has exited.
+Profiling of 'DarcMagik' stopped.
+Symbols failed to load for C:\Windows\System32\ntdll.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\ntdll.dll. Cannot find or open the PDB file.
+Symbols loaded for D:\OneDrive\Game Development Portfolio\DarcMagik\build\bin\DarcMagikD_1_0.exe.
+Symbols failed to load for C:\Windows\System32\wow64cpu.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\combase.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\user32.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Program Files\ASUSTeKcomputer.Inc\Sonic Suite 3\Foundation\SS3DevProps.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\d3d11.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\dxgi.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\nvspcap.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\d3d11_3SDKLayers.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\msvcp140d.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\XAudioD2_7.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\ucrtbased.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\KernelBase.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\WindowsCodecs.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\kernel32.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\vcruntime140d.dll. Cannot find or open the PDB file.
+Symbols failed to load for C:\Windows\SysWOW64\win32u.dll. Cannot find or open the PDB file.

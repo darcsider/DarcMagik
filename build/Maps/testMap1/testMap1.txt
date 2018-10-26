@@ -1,0 +1,4 @@
+testMap1
+1
+..\Maps\testMap1\Layer0.txt
+0

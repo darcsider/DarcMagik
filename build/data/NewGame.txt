@@ -1,0 +1,4 @@
+1
+..\Art\grassTiles.png
+grassTiles
+..\Maps\GameWorld1.txt

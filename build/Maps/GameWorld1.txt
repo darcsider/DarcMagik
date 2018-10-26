@@ -1,0 +1,2 @@
+1
+..\Maps\testMap1\testMap1.txt
