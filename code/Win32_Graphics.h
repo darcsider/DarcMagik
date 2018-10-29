@@ -84,6 +84,17 @@ class Win32_Graphics
 			return m_spriteFont->GetLineSpacing();
 		}
 
+		RECT FontMeasureBounds()
+		{
+			wstring text = ConvertSTRtoWSTR("X");
+			return m_spriteFont->MeasureDrawBounds(text.c_str(), XMFLOAT2(0, 0));
+		}
+
+		XMVECTOR FontMeasureString(string text)
+		{
+			return m_spriteFont->MeasureString(ConvertSTRtoWSTR(text).c_str());
+		}
+
 		// draw a text string to the screen at the specific location
 		void DrawTextToScreen(string text, Vector2 position);
 

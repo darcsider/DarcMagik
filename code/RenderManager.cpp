@@ -147,6 +147,15 @@ float RenderManager::GetLineSpacing()
 	return 0.0;
 }
 
+XMVECTOR RenderManager::FontMeasureString(string text)
+{
+	// return an XMVECTOR of the measure of the string being passed in
+#if _WIN32
+	return m_win32_Graphics->FontMeasureString(text);
+#endif
+	return XMVECTOR();
+}
+
 bool RenderManager::IsNVIDIAChipset()
 {
 	// check if its a NVIDIA graphics card

@@ -16,6 +16,7 @@ $Creator: Jamie Cooper
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+#include <mutex>
 #include <string>
 #include <stack>
 #include <vector>

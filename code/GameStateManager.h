@@ -12,20 +12,15 @@ $Creator: Jamie Cooper
 #include "World.h"
 #include "Actor.h"
 #include "Console.h"
-#include "UserInterface.h"
 
 class GameStateManager;
 
 /*
 GameStates
 BannerParadeState - used to show off the company logo as well as any other logos needed like Sony, Microsoft, etc...
-GamestartState - This is the replacement for NewGameState its when the player selects new game from MainMenuState
 MainMenuState - After the BannerParadeState is done it loads into MainMenuState showing the Title Screen and the menu
-LocalMapState - This is the state for when the player is inside a city / dungeon
-WorldMapState - This is the state for when the player is located out in the main world not inside a city / dungeon
-CombatState - This is the state for when the player gets into a random battle or a boss battle
-InGameMenuState - This is the state for when the player is out in the world, or in a city / dungeon and opens the menu
-that shows the players team, and they can look at inventory, and abilities and also settings for the game.
+CoreGameState - This is the state where most of the gameplay will take place, once the player either selects new game
+or loads a game save it will load into this state and other systems and objects will be loaded.
 */
 
 // basic abstract virtual class gamestate
@@ -68,7 +63,7 @@ class BannerParadeState : public GameState
 	public:
 		// default constructor does nothing
 		BannerParadeState();
-		// constructor takes a function pointer and the filename of text file to build state
+		// constructor takes a pointer to the GameStateManager and the filename of text file to build state
 		BannerParadeState(GameStateManager *stateManager, string filename);
 		// destructor does nothing
 		virtual ~BannerParadeState();
@@ -103,10 +98,38 @@ class MainMenuState : public GameState
 	public:
 		// default constructor does nothing right now
 		MainMenuState();
-		// constructor takes a function pointer and the filename of text file to build state
+		// constructor takes a pointer to the GameStateManager and the filename of text file to build state
 		MainMenuState(GameStateManager *stateManager, string filename);
 		// destructor that cleans up the class when the object is being deleted
 		virtual ~MainMenuState();
+		// build the state from the textfile set for the state
+		void BuildState();
+		// if this state needs to process input it is received here
+		virtual void InputCallBack(bool pressed, GameActions action);
+		// setup any input commands here
+		virtual void SetupInput();
+		// update the banner parade state
+		virtual void Update(float delta);
+		// execute / process what needs done in the banner parade
+		virtual void Execute();
+		// when the state is entered / called while active pure virtual
+		virtual void OnEnter();
+		// when the state is leaving / being removed pure virtual
+		virtual void OnExit();
+};
+
+class CoreGameState : public GameState
+{
+	protected:
+		GameWorld *m_currentWorld;
+
+	public:
+		// default constructor does nothing right now
+		CoreGameState();
+		// constructor takes a pointer to the GameStateManager and the filename of text file to build state
+		CoreGameState(GameStateManager *stateManager, string filename);
+		// destructor that cleans up the class when the object is being deleted
+		virtual ~CoreGameState();
 		// build the state from the textfile set for the state
 		void BuildState();
 		// if this state needs to process input it is received here
@@ -131,8 +154,6 @@ class GameStartState : public GameState
 		GameWorld *testWorld;
 		Actor *testCharacter;
 		Sprite *testCharacterSprite;
-		string m_fileName;
-		ScreenPanel *m_screenPanel;
 
 	public:
 		// default constructor does nothing right now

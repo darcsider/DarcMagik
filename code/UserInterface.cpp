@@ -1,113 +1,174 @@
 /*=====================================================================================
 $File: UserInterface.cpp
-$Date: October 23, 2018
+$Date: October 27th, 2018
 $Creator: Jamie Cooper
 =====================================================================================*/
 #include "UserInterface.h"
 
-ScreenPanel::ScreenPanel()
-{
-	displayPanel = false;
-}
-
-ScreenPanel::~ScreenPanel()
+RPGDialogBox::RPGDialogBox()
 {
 
 }
 
-void ScreenPanel::CreatePanel(int width, int height, Vector2 position, XMFLOAT4 color)
+RPGDialogBox::~RPGDialogBox()
 {
-	if (width > 0)
-	{
-		panelWidth = width;
-	}
-	else
-	{
-		panelWidth = 96;
-	}
 
-	if (height > 0)
+}
+
+void RPGDialogBox::Clear()
+{
+	if (m_buffer)
 	{
-		panelHeight = height;
-	}
-	else
-	{
-		panelHeight = 96;
+		memset(m_buffer.get(), 0, sizeof(wchar_t) * (m_columns + 1) * m_rows);
 	}
 
-	panelPosition = position;
+	m_currentColumn = m_currentLine = 0;
+}
 
-	panelColors[0] = color;
-	panelColors[1] = color;
-	panelColors[2] = color;
-	panelColors[3] = color;
+void RPGDialogBox::Render()
+{
+	wstring LineOfText;
+	std::lock_guard<std::mutex> lock(m_mutex);
 
-	panelWidthSections = panelWidth / 32;
-	if (panelWidthSections < 1)
+	float lineSpacing = RenderManager::GetInstance().GetLineSpacing();;
+
+	float x = float(m_textArea.left);
+	float y = float(m_textArea.top);
+
+	unsigned int textLine = unsigned int(m_currentLine - m_rows + m_rows + 1) % m_rows;
+
+	for (unsigned int line = 0; line < m_rows; ++line)
 	{
-		panelWidthSections = 1;
-	}
+		XMFLOAT2 pos(x, y + lineSpacing * float(line));
 
-	panelHeightSections = panelHeight / 32;
-	if (panelHeightSections < 1)
-	{
-		panelHeightSections = 1;
+		if (*m_lines[textLine])
+		{
+			LineOfText = m_lines[textLine];
+			string currentLine(LineOfText.begin(), LineOfText.end());
+			RenderManager::GetInstance().RenderText(currentLine, pos);
+		}
+
+		textLine = unsigned int(textLine + 1) % m_rows;
 	}
 }
 
-void ScreenPanel::CreatePanel(int width, int height, Vector2 position, XMFLOAT4 colors[4])
+void RPGDialogBox::ProcessString(const wchar_t* str)
 {
-	if (width > 0)
-	{
-		panelWidth = width;
-	}
-	else
-	{
-		panelWidth = 96;
-	}
+	wstring stringOfText;
 
-	if (height > 0)
-	{
-		panelHeight = height;
-	}
-	else
-	{
-		panelHeight = 96;
-	}
+	if (!m_lines)
+		return;
 
-	panelPosition = position;
+	float width = float(m_textArea.right - m_textArea.left);
 
-	panelColors[0] = colors[0];
-	panelColors[1] = colors[1];
-	panelColors[2] = colors[2];
-	panelColors[3] = colors[3];
-
-	panelWidthSections = panelWidth / 32;
-	if (panelWidthSections < 1)
+	for (const wchar_t* ch = str; *ch != 0; ++ch)
 	{
-		panelWidthSections = 1;
-	}
+		if (*ch == '\n')
+		{
+			IncrementLine();
+			continue;
+		}
 
-	panelHeightSections = panelHeight / 32;
-	if (panelHeightSections < 1)
-	{
-		panelHeightSections = 1;
+		bool increment = false;
+
+		if (m_currentColumn >= m_columns)
+		{
+			increment = true;
+		}
+		else
+		{
+			m_lines[m_currentLine][m_currentColumn] = *ch;
+
+			stringOfText = m_lines[m_currentLine];
+			string text(stringOfText.begin(), stringOfText.end());
+			auto fontSize = RenderManager::GetInstance().FontMeasureString(text);
+			if (XMVectorGetX(fontSize) > width)
+			{
+				m_lines[m_currentLine][m_currentColumn] = L'\0';
+
+				increment = true;
+			}
+		}
+
+		if (increment)
+		{
+			IncrementLine();
+			m_lines[m_currentLine][0] = *ch;
+		}
+
+		++m_currentColumn;
 	}
 }
 
-void ScreenPanel::TogglePannel()
+void RPGDialogBox::IncrementLine()
 {
-	displayPanel = !displayPanel;
+	if (!m_lines)
+		return;
+
+	m_currentLine = (m_currentLine + 1) % m_rows;
+	m_currentColumn = 0;
+	memset(m_lines[m_currentLine], 0, sizeof(wchar_t) * (m_columns + 1));
 }
 
-void ScreenPanel::DisplayPanel()
+void RPGDialogBox::Write(string textString)
 {
-	Vector2 sectionPosition = panelPosition;
-	int panelIndex = 0;
+	wstring text = RenderManager::GetInstance().ConvertSTRtoWSTR(textString);
+	std::lock_guard<std::mutex> lock(m_mutex);
 
-	if (displayPanel)
+	ProcessString(text.c_str());
+}
+
+void RPGDialogBox::WriteLine(string textString)
+{
+	wstring text = RenderManager::GetInstance().ConvertSTRtoWSTR(textString);
+	std::lock_guard<std::mutex> lock(m_mutex);
+
+	ProcessString(text.c_str());
+	IncrementLine();
+}
+
+void RPGDialogBox::SetWindow(const RECT& layout)
+{
+	m_textArea = layout;
+
+	float lineSpacing = RenderManager::GetInstance().GetLineSpacing();
+	unsigned int rows = std::max<unsigned int>(1, static_cast<unsigned int>(float(layout.bottom - layout.top) / lineSpacing));
+
+	RECT fontLayout = RenderManager::GetInstance().FontMeasureBounds();
+	unsigned int columns = std::max<unsigned int>(1, static_cast<unsigned int>(float(layout.right - layout.left) / float(fontLayout.right - fontLayout.left)));
+
+	std::unique_ptr<wchar_t[]> buffer(new wchar_t[(columns + 1) * rows]);
+	memset(buffer.get(), 0, sizeof(wchar_t) * (columns + 1) * rows);
+
+	std::unique_ptr<wchar_t*[]> lines(new wchar_t*[rows]);
+	for (unsigned int line = 0; line < rows; ++line)
 	{
-		RenderManager::GetInstance().RenderQuad(panelPosition, panelWidth, panelHeight, panelColors);
-
+		lines[line] = buffer.get() + (columns + 1) * line;
 	}
+
+	if (m_lines)
+	{
+		unsigned int c = std::min<unsigned int>(columns, m_columns);
+		unsigned int r = std::min<unsigned int>(rows, m_rows);
+
+		for (unsigned int line = 0; line < r; ++line)
+		{
+			memcpy(lines[line], m_lines[line], c * sizeof(wchar_t));
+		}
+	}
+
+	std::swap(columns, m_columns);
+	std::swap(rows, m_rows);
+	std::swap(buffer, m_buffer);
+	std::swap(lines, m_lines);
+}
+
+void RPGDialogBox::BuildDialogBox(char textToDisplay[256])
+{
+
+}
+
+void RPGDialogBox::DisplayDialogBox()
+{
+
 }

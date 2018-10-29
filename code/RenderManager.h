@@ -67,8 +67,15 @@ class RenderManager
 		// windows specific get the texture Description for a specific texture
 		// will probably write a version similar for other platforms as needed
 		D3D11_TEXTURE2D_DESC GetTextureDesc(string name);
-		// this may go away if I don't get level editor working, as this is only used in it
 		float GetLineSpacing();
+		XMVECTOR FontMeasureString(string text);
+		RECT FontMeasureBounds()
+		{
+#if _WIN32
+			return m_win32_Graphics->FontMeasureBounds();
+#endif
+			return RECT();
+		}
 
 		// check to see if it is a NVIDIA chip or AMD
 		bool IsNVIDIAChipset();
@@ -90,6 +97,14 @@ class RenderManager
 		bool IsReadyToRender()
 		{
 			return m_RenderReady;
+		}
+
+		wstring ConvertSTRtoWSTR(string text)
+		{
+#if _WIN32
+			return m_win32_Graphics->ConvertSTRtoWSTR(text);
+#endif
+			return wstring();
 		}
 };
 #endif

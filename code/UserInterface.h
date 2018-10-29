@@ -1,7 +1,7 @@
 #pragma once
 /*=====================================================================================
 $File: UserInterface.h
-$Date: October 23, 2018
+$Date: October 27th, 2018
 $Creator: Jamie Cooper
 =====================================================================================*/
 #ifndef USERINTERFACE_H
@@ -9,32 +9,35 @@ $Creator: Jamie Cooper
 #include "Includes.h"
 #include "RenderManager.h"
 
-class ScreenPanel;
-
-class MessageDialogBox
+// a collection of classes that will be used for various User Interface needs like dialogue boxes, etc...
+class RPGDialogBox
 {
-	private:
-		string textureName;
-		RECT textArea;
-};
-
-class ScreenPanel
-{
-	private:
-		int panelWidth;
-		int panelHeight;
-		int panelWidthSections;
-		int panelHeightSections;
-		Vector2 panelPosition;
-		XMFLOAT4 panelColors[4];
-		bool displayPanel;
+	protected:
+		string							m_fileName;
+		RECT							m_textArea;
+		bool							m_hasCharImage;
+		RECT							m_charImageArea;
+		std::unique_ptr<wchar_t[]>		m_buffer;
+		std::unique_ptr<wchar_t*[]>		m_lines;
+		std::vector<wchar_t>			m_tempBuffer;
+		unsigned int					m_columns;
+		unsigned int					m_rows;
+		unsigned int					m_currentColumn;
+		unsigned int					m_currentLine;
+		std::mutex						m_mutex;
 
 	public:
-		ScreenPanel();
-		~ScreenPanel();
-		void CreatePanel(int width, int height, Vector2 position, XMFLOAT4 color);
-		void CreatePanel(int width, int height, Vector2 position, XMFLOAT4 colors[4]);
-		void TogglePannel();
-		void DisplayPanel();
+		RPGDialogBox();
+		~RPGDialogBox();
+		void Clear();
+		void Render();
+		void ProcessString(const wchar_t* str);
+		void IncrementLine();
+		void DisplayDialogBox();
+		void Write(string textString);
+		void WriteLine(string textString);
+		void SetWindow(const RECT& layout);
+		void Format(const wchar_t* strFormat, ...);
+		void BuildDialogBox(char textToDisplay[256]);
 };
 #endif

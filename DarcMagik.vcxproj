@@ -179,6 +179,7 @@
     <ClInclude Include="code\Item.h" />
     <ClInclude Include="code\RenderManager.h" />
     <ClInclude Include="code\Sprite.h" />
+    <ClInclude Include="code\TextConsole.h" />
     <ClInclude Include="code\UserInterface.h" />
     <ClInclude Include="code\Win32_Audio.h" />
     <ClInclude Include="code\Win32_Graphics.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="code\Item.cpp" />
     <ClCompile Include="code\RenderManager.cpp" />
     <ClCompile Include="code\Sprite.cpp" />
+    <ClCompile Include="code\TextConsole.cpp" />
     <ClCompile Include="code\UserInterface.cpp" />
     <ClCompile Include="code\Win32_Audio.cpp" />
     <ClCompile Include="code\Win32_Graphics.cpp" />

@@ -409,7 +409,7 @@ GameStartState::GameStartState()
 GameStartState::GameStartState(GameStateManager *stateManager, string filename)
 {
 	// set the filename for the state
-	m_fileName = filename;
+	m_textFile = filename;
 	// set the pointer to the stateManager
 	m_stateManager = stateManager;
 	// Build the new Game State
@@ -424,7 +424,7 @@ GameStartState::~GameStartState()
 void GameStartState::BuildState()
 {
 	// NewGame State is not what it will be when final
-	ifstream inFile(m_fileName);
+	ifstream inFile(m_textFile);
 	int numberOfTextures;
 	string tempString;
 	string filename;
@@ -449,13 +449,8 @@ void GameStartState::BuildState()
 	testWorld = new GameWorld();
 	testWorld->BuildMaps(mapFileName);
 	testWorld->SetCurrentMap("testMap1");
-	
-	m_screenPanel = new ScreenPanel();
-	XMFLOAT4 colors[4] = { XMFLOAT4(1, 0, 0, 1.0f) , XMFLOAT4(1, 0, 0, 1.0f) , XMFLOAT4(0.5, 0, 0, 0.5f) , XMFLOAT4(0.5, 0, 0, 0.5f) };
-	m_screenPanel->CreatePanel(960, 384, Vector2(100, 100), colors);
 
 	Console::GetInstance().Initialize(Vector2(0, 0), RenderManager::GetInstance().GetGameWidth(), 200, XMFLOAT4(0, 0, 0, 0.8f));
-
 }
 
 void GameStartState::InputCallBack(bool pressed, GameActions action)
@@ -480,16 +475,6 @@ void GameStartState::InputCallBack(bool pressed, GameActions action)
 		if (action == DirectionMoveDown)
 		{
 			testWorld->GetCurrentMap()->UpdateMapVelocity("Y", 1.0f);
-		}
-
-		if (action == SystemConsole)
-		{
-			Console::GetInstance().HideShow(pressed, action);
-		}
-
-		if (action == CharacterAttack)
-		{
-			m_screenPanel->TogglePannel();
 		}
 	}
 	else
@@ -522,7 +507,6 @@ void GameStartState::Update(float delta)
 void GameStartState::Execute()
 {
 	testWorld->RenderCurrentMap();
-	//m_screenPanel->DisplayPanel();
 }
 
 void GameStartState::OnEnter()
@@ -531,6 +515,104 @@ void GameStartState::OnEnter()
 }
 
 void GameStartState::OnExit()
+{
+	// TODO: Figure out if this method needs anything
+}
+
+CoreGameState::CoreGameState()
+{
+	// default constructor left blank currently
+}
+
+CoreGameState::CoreGameState(GameStateManager *stateManager, string filename)
+{
+	// set the filename for the state
+	m_textFile = filename;
+	// set the pointer to the stateManager
+	m_stateManager = stateManager;
+	// Build the new Game State
+	BuildState();
+}
+
+CoreGameState::~CoreGameState()
+{
+	// TODO: Figure out if this method needs anything
+}
+
+void CoreGameState::BuildState()
+{
+	// NewGame State is not what it will be when final
+	ifstream inFile(m_textFile);
+	int numberOfTextures;
+	string tempString;
+	string filename;
+	string resourceName;
+	string mapFileName;
+
+	if (inFile)
+	{
+		getline(inFile, tempString);
+		numberOfTextures = atoi(tempString.c_str());
+
+		for (int i = 0; i < numberOfTextures; i++)
+		{
+			getline(inFile, filename);
+			getline(inFile, resourceName);
+			RenderManager::GetInstance().AddTexture(filename, resourceName);
+		}
+		getline(inFile, mapFileName);
+	}
+	inFile.close();
+
+	m_currentWorld = new GameWorld();
+	m_currentWorld->BuildMaps(mapFileName);
+	m_currentWorld->SetCurrentMap("testMap1");
+}
+
+void CoreGameState::InputCallBack(bool pressed, GameActions action)
+{
+	if (pressed)
+	{
+
+	}
+	else
+	{
+
+	}
+}
+
+void CoreGameState::SetupInput()
+{
+	InputManager::GetInstance().ClearFunctionPointers();
+
+	function<void(bool, GameActions)> closeGame = bind(&GameWorld::CloseGame, m_currentWorld, placeholders::_1, placeholders::_2);
+	InputManager::GetInstance().AddKeyboardActionBinding(SystemExitEarly, closeGame);
+
+	function<void(bool, GameActions)> moveMap = bind(&CoreGameState::InputCallBack, this, placeholders::_1, placeholders::_2);
+	InputManager::GetInstance().AddKeyboardActionBinding(CharacterAttack, moveMap);
+	InputManager::GetInstance().AddKeyboardActionBinding(DirectionMoveLeft, moveMap);
+	InputManager::GetInstance().AddKeyboardActionBinding(DirectionMoveRight, moveMap);
+	InputManager::GetInstance().AddKeyboardActionBinding(DirectionMoveUp, moveMap);
+	InputManager::GetInstance().AddKeyboardActionBinding(DirectionMoveDown, moveMap);
+	InputManager::GetInstance().AddKeyboardActionBinding(SystemConsole, moveMap);
+}
+
+void CoreGameState::Update(float delta)
+{
+
+}
+
+void CoreGameState::Execute()
+{
+
+}
+
+void CoreGameState::OnEnter()
+{
+	SetupInput();
+}
+
+void CoreGameState::OnExit()
 {
 	// TODO: Figure out if this method needs anything
 }
