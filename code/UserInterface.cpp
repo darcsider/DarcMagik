@@ -15,7 +15,51 @@ RPGDialogBox::~RPGDialogBox()
 
 }
 
-void RPGDialogBox::Clear()
+void RPGDialogBox::BuildDialogBox()
+{
+	m_tileSize.x = 32;
+	m_tileSize.y = 32;
+	
+	m_textArea.left = 100;
+	m_textArea.right = 300;
+	m_textArea.top = 100;
+	m_textArea.bottom = 300;
+
+	m_boxWidth = 200;
+	m_boxHeight = 200;
+	m_position.x = 100;
+	m_position.y = 100;
+	m_sections.x = (m_textArea.right - m_textArea.left) / m_tileSize.x;
+	m_sections.y = (m_textArea.bottom - m_textArea.top) / m_tileSize.y;
+
+	RECT sourceRectangle;
+	sourceRectangle.left = 0;
+	sourceRectangle.right = sourceRectangle.left + m_tileSize.x;
+	sourceRectangle.top = 0;
+	sourceRectangle.bottom = sourceRectangle.top + m_tileSize.y;
+
+	/*for (int row = 0; row < m_sections.y; row++)
+	{
+		/*sourceRectangle.left = row * m_tileSize.x;
+		sourceRectangle.right = sourceRectangle.left + m_tileSize.x;
+		sourceRectangle.top = row * m_tileSize.y;
+		sourceRectangle.bottom = sourceRectangle.top + m_tileSize.y;
+		RenderManager::GetInstance().RenderObject("MessageBox", sourceRectangle, m_position);
+		m_position.x = 100;
+		m_position.y = 100 + m_tileSize.y;
+		for (int column = 0; column < m_sections.x; column++)
+		{
+			sourceRectangle.left = m_tileSize.x * column;
+			sourceRectangle.right = sourceRectangle.left + m_tileSize.x;
+			sourceRectangle.top = row * m_tileSize.y;
+			sourceRectangle.bottom = sourceRectangle.top + m_tileSize.y;
+			RenderManager::GetInstance().RenderObject("MessageBox", sourceRectangle, m_position);
+			m_position.x += (column * m_tileSize.x);
+		}
+	}*/
+}
+
+/*void RPGDialogBox::Clear()
 {
 	if (m_buffer)
 	{
@@ -43,9 +87,7 @@ void RPGDialogBox::Render()
 
 		if (*m_lines[textLine])
 		{
-			LineOfText = m_lines[textLine];
-			string currentLine(LineOfText.begin(), LineOfText.end());
-			RenderManager::GetInstance().RenderText(currentLine, pos);
+			RenderManager::GetInstance().RenderText(m_lines[textLine], pos);
 		}
 
 		textLine = unsigned int(textLine + 1) % m_rows;
@@ -54,8 +96,6 @@ void RPGDialogBox::Render()
 
 void RPGDialogBox::ProcessString(const wchar_t* str)
 {
-	wstring stringOfText;
-
 	if (!m_lines)
 		return;
 
@@ -79,9 +119,7 @@ void RPGDialogBox::ProcessString(const wchar_t* str)
 		{
 			m_lines[m_currentLine][m_currentColumn] = *ch;
 
-			stringOfText = m_lines[m_currentLine];
-			string text(stringOfText.begin(), stringOfText.end());
-			auto fontSize = RenderManager::GetInstance().FontMeasureString(text);
+			auto fontSize = RenderManager::GetInstance().FontMeasureString(m_lines[m_currentLine]);
 			if (XMVectorGetX(fontSize) > width)
 			{
 				m_lines[m_currentLine][m_currentColumn] = L'\0';
@@ -163,12 +201,18 @@ void RPGDialogBox::SetWindow(const RECT& layout)
 	std::swap(lines, m_lines);
 }
 
-void RPGDialogBox::BuildDialogBox(char textToDisplay[256])
+void RPGDialogBox::BuildDialogBox(vector<string> text)
 {
+	m_boxStrings = text;
 
+	for (int i = 0; i < m_boxStrings.size(); i++)
+	{
+		WriteLine(m_boxStrings[i]);
+	}
 }
 
 void RPGDialogBox::DisplayDialogBox()
 {
-
-}
+	if (m_hasCharImage)
+		Render();
+}*/

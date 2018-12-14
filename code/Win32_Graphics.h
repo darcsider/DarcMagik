@@ -95,8 +95,14 @@ class Win32_Graphics
 			return m_spriteFont->MeasureString(ConvertSTRtoWSTR(text).c_str());
 		}
 
+		XMVECTOR FontMeasureString(wchar_t *text)
+		{
+			return m_spriteFont->MeasureString(text);
+		}
+
 		// draw a text string to the screen at the specific location
 		void DrawTextToScreen(string text, Vector2 position);
+		void DrawTextToScreen(wchar_t *text, Vector2 position);
 
 		// return the texture Description for the texture passed in
 		D3D11_TEXTURE2D_DESC GetTextureDesc(string textureName);

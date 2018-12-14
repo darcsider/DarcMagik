@@ -367,6 +367,20 @@ void Win32_Graphics::DrawTextToScreen(string text, Vector2 position)
 	}
 }
 
+void Win32_Graphics::DrawTextToScreen(wchar_t *text, Vector2 position)
+{
+	if (graphicsInitialized)
+	{
+		if (m_spriteBatch != NULL)
+		{
+			m_spriteBatch->Begin(SpriteSortMode_Immediate);
+			m_spriteFont->DrawString(m_spriteBatch.get(), text, position);
+			m_spriteBatch->End();
+			PresentScene();
+		}
+	}
+}
+
 void Win32_Graphics::DrawObject(string textureName)
 {
 	// check that graphics has been initialized

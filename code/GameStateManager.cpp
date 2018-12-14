@@ -451,13 +451,23 @@ void GameStartState::BuildState()
 	testWorld->SetCurrentMap("testMap1");
 
 	Console::GetInstance().Initialize(Vector2(0, 0), RenderManager::GetInstance().GetGameWidth(), 200, XMFLOAT4(0, 0, 0, 0.8f));
+	box = new RPGDialogBox();
+	//box->BuildDialogBox();
+	//box->SetWindow(screen);
+	/*vector<string> text;
+	text.push_back("test string, how does this display on the screen.");
+	text.push_back("Line 2 how does this display on the screen.");
+	text.push_back("Line 3 how does this display on the screen.");
+	text.push_back("Line 4 how does this display on the screen.");
+	text.push_back("test string, how does this display on the screen.");
+	box->BuildDialogBox(text);*/
 }
 
 void GameStartState::InputCallBack(bool pressed, GameActions action)
 {
 	if (pressed)
 	{
-		if (action == DirectionMoveLeft)
+		/*if (action == DirectionMoveLeft)
 		{
 			testWorld->GetCurrentMap()->UpdateMapVelocity("X", -1.0f);
 		}
@@ -475,11 +485,15 @@ void GameStartState::InputCallBack(bool pressed, GameActions action)
 		if (action == DirectionMoveDown)
 		{
 			testWorld->GetCurrentMap()->UpdateMapVelocity("Y", 1.0f);
+		}*/
+		if (action == SystemConsole)
+		{
+			//box->DisplayToScreen();
 		}
 	}
 	else
 	{
-		testWorld->GetCurrentMap()->UpdateMapVelocity("both", 0.0f);
+		//testWorld->GetCurrentMap()->UpdateMapVelocity("both", 0.0f);
 	}
 }
 
@@ -501,12 +515,14 @@ void GameStartState::SetupInput()
 
 void GameStartState::Update(float delta)
 {
-	testWorld->UpdateCurrentMap(delta);
+	//testWorld->UpdateCurrentMap(delta);
 }
 
 void GameStartState::Execute()
 {
-	testWorld->RenderCurrentMap();
+	//testWorld->RenderCurrentMap();
+	//box->DisplayDialogBox();
+	box->BuildDialogBox();
 }
 
 void GameStartState::OnEnter()

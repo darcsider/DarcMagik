@@ -56,6 +56,7 @@ class RenderManager
 		void RenderObject(string name, RECT sourceRect, Vector2 position);
 		void RenderObject(string name, RECT sourceRect, RECT destRect);
 		void RenderText(string text, Vector2 position);
+		void RenderText(wchar_t *text, Vector2 position);
 
 		// platform specific if the size of the window changes
 		// this will only be used on Windows, and possibly linux and macOS
@@ -69,6 +70,7 @@ class RenderManager
 		D3D11_TEXTURE2D_DESC GetTextureDesc(string name);
 		float GetLineSpacing();
 		XMVECTOR FontMeasureString(string text);
+		XMVECTOR FontMeasureString(wchar_t *text);
 		RECT FontMeasureBounds()
 		{
 #if _WIN32

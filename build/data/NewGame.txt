@@ -1,4 +1,6 @@
-1
+2
 ..\Art\grassTiles.png
 grassTiles
+..\Art\MessageBoxTemplate.png
+MessageBox
 ..\Maps\GameWorld1.txt

@@ -12,7 +12,7 @@ $Creator: Jamie Cooper
 #include "World.h"
 #include "Actor.h"
 #include "Console.h"
-
+#include "UserInterface.h"
 class GameStateManager;
 
 /*
@@ -154,6 +154,7 @@ class GameStartState : public GameState
 		GameWorld *testWorld;
 		Actor *testCharacter;
 		Sprite *testCharacterSprite;
+		RPGDialogBox *box;
 
 	public:
 		// default constructor does nothing right now

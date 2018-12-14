@@ -55,7 +55,15 @@ void RenderManager::RenderObject(string name, RECT sourceRect, RECT destRect)
 
 void RenderManager::RenderText(string text, Vector2 position)
 {
-	// draw an object to the screen with the platform specific graphics system
+	// draw text to the screen with the platform specific graphics system
+#if _WIN32
+	m_win32_Graphics->DrawTextToScreen(text, position);
+#endif
+}
+
+void RenderManager::RenderText(wchar_t *text, Vector2 position)
+{
+	// draw text to the screen with the platform specific graphics system
 #if _WIN32
 	m_win32_Graphics->DrawTextToScreen(text, position);
 #endif
@@ -154,6 +162,14 @@ XMVECTOR RenderManager::FontMeasureString(string text)
 	return m_win32_Graphics->FontMeasureString(text);
 #endif
 	return XMVECTOR();
+}
+
+XMVECTOR RenderManager::FontMeasureString(wchar_t *text)
+{
+	// return an XMVECTOR of the measure of the string being passed in
+#if _WIN32
+	return m_win32_Graphics->FontMeasureString(text);
+#endif
 }
 
 bool RenderManager::IsNVIDIAChipset()
