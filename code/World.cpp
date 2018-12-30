@@ -391,7 +391,8 @@ void GameMap::RenderMap()
 
 GameWorld::GameWorld()
 {
-	// currently left blank intentionally
+	// initialize variables to default values
+	m_currentGameMap = nullptr;
 }
 
 GameWorld::~GameWorld()

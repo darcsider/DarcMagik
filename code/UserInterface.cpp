@@ -6,6 +6,7 @@ $Creator: Jamie Cooper
 #include "UserInterface.h"
 
 RPGDialogBox::RPGDialogBox()
+	:m_boxHeight(0), m_boxWidth(0)
 {
 
 }

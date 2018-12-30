@@ -8,6 +8,10 @@ $Creator: Jamie Cooper
 Actor::Actor()
 {
 	// TODO Fill This In
+	m_hitPoints = 0;
+	m_attackPower = 0;
+	m_defensePower = 0;
+	m_actorSpeed = 0;
 }
 
 Actor::~Actor()

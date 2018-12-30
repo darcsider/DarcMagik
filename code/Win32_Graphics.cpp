@@ -13,6 +13,7 @@ Win32_Graphics::Win32_Graphics()
 	m4xMsaaQuality = 0;
 	m_gameWidth = 0;
 	m_gameHeight = 0;
+	m_featureLevel = D3D_FEATURE_LEVEL_11_0;
 }
 
 Win32_Graphics::~Win32_Graphics()

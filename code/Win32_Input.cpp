@@ -13,6 +13,9 @@ Win32Input::Win32Input()
 
 	// build the defualt bindings for the game
 	BuildDefaultBindings();
+
+	// initialize variables to default values
+	m_key = Keyboard::Keys::Escape;
 }
 
 Win32Input::~Win32Input()

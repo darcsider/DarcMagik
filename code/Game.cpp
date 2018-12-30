@@ -10,7 +10,8 @@ Game::Game() :
 	m_window(0),
 	m_gameWidth(1920),
 	m_gameHeight(1080),
-	m_gameInitialized(false)
+	m_gameInitialized(false),
+	m_appPaused(false)
 {
 
 }

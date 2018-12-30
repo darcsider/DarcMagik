@@ -7,7 +7,21 @@ $Creator: Jamie Cooper
 
 Console::Console()
 {
-	// left blank for now
+	m_consolePosition = Vector2::Zero;
+	m_width = 0;
+	m_height = 0;
+	m_backgroundColor = XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+	m_lineSpacing = 0;
+	m_promptPosition = Vector2(0.0f, 0.0f);
+	m_textPosition = Vector2(0.0f, 0.0f);
+	m_startTextPosition = Vector2(0.0f, 0.0f);
+	m_textInput.clear();
+	m_newline = false;
+	m_visible = false;
+	m_commandMap.clear();
+	m_commandString.clear();
+	m_prompt.clear();
+	m_history.clear();
 }
 
 Console::~Console()

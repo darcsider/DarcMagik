@@ -48,6 +48,14 @@ struct ActorAbility
 		string		m_animationName;	// what is the name of the animation in the sprite for this ability
 
 	public:
+		// Constructor
+		ActorAbility()
+		{
+			m_abilityID = "none";
+			m_abilityType = AbilityType::AbilityNone;
+			m_effectAmount = 0;
+			m_animationName = "none";
+		}
 		// get the ability ID
 		string GetAbilityID() { return m_abilityID; }
 		// set the ability ID

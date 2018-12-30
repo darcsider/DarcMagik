@@ -11,11 +11,11 @@ $Creator: Jamie Cooper
 // data structure of all data a sprite needs for it
 struct SpriteData
 {
-	int width;
-	int height;
-	int columns;
-	int rows;
-	float scale;
+	int width = 0;
+	int height = 0;
+	int columns = 0;
+	int rows = 0;
+	float scale = 0.0f;
 	RECT sourceRect;
 	string textureName;
 };

@@ -12,13 +12,13 @@ using Microsoft::WRL::ComPtr;
 using namespace DirectX;
 
 TextConsole::TextConsole()
-	: m_textColor(1.f, 1.f, 1.f, 1.f)
+	: m_textColor(1.f, 1.f, 1.f, 1.f), m_layout()
 {
 	Clear();
 }
 
 TextConsole::TextConsole(ID3D11DeviceContext* context, const wchar_t* fontName)
-	: m_textColor(1.f, 1.f, 1.f, 1.f)
+	: m_textColor(1.f, 1.f, 1.f, 1.f), m_layout()
 {
 	RestoreDevice(context, fontName);
 

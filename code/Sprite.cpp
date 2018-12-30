@@ -7,7 +7,8 @@ $Creator: Jamie Cooper
 
 Sprite::Sprite()
 {
-	// left blank for now
+	// initialize variables
+	m_currentAction = AnimatedAction();
 }
 
 Sprite::~Sprite()

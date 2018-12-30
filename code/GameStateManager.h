@@ -33,7 +33,10 @@ class GameState
 
 	public:
 		// constructor
-		GameState() {}
+		GameState() 
+		{
+			m_stateManager = nullptr;
+		}
 		// destructor
 		virtual ~GameState() {}
 		// build the state pure virtual

@@ -7,8 +7,8 @@ $Creator: Jamie Cooper
 
 BannerParadeState::BannerParadeState()
 {
-	// does nothing currently
-	// TODO: Figure out if this method needs anything
+	// initialize bannerTimer to 0.0f until used
+	m_bannerTimer = 0.0f;
 }
 
 BannerParadeState::BannerParadeState(GameStateManager *stateManager, string filename)
@@ -21,6 +21,8 @@ BannerParadeState::BannerParadeState(GameStateManager *stateManager, string file
 	m_stateManager = stateManager;
 	// Build all banners from text file
 	BuildState();
+	// initialize bannerTimer to 0.0f until used
+	m_bannerTimer = 0.0f;
 }
 
 BannerParadeState::~BannerParadeState()
@@ -158,8 +160,8 @@ void BannerParadeState::OnExit()
 
 MainMenuState::MainMenuState()
 {
-	// default constructor left blank for now
-	// TODO: Figure out if this method needs anything
+	// initialize currentSelection to 0
+	m_currentSelection = 0;
 }
 
 MainMenuState::MainMenuState(GameStateManager *stateManager, string filename)
@@ -174,6 +176,8 @@ MainMenuState::MainMenuState(GameStateManager *stateManager, string filename)
 	m_textFile = filename;
 	// set the pointer to the stateManager
 	m_stateManager = stateManager;
+	// initialize currentSelection to 0
+	m_currentSelection = 0;
 	// build the state with the text file passed in
 	BuildState();
 }
@@ -403,7 +407,9 @@ void MainMenuState::OnExit()
 
 GameStartState::GameStartState()
 {
-	// default constructor left blank currently
+	// initialize variables (these are currently temporary variables)
+	testCharacterSprite = new Sprite();
+	testCharacter = new Actor();
 }
 
 GameStartState::GameStartState(GameStateManager *stateManager, string filename)
@@ -412,6 +418,9 @@ GameStartState::GameStartState(GameStateManager *stateManager, string filename)
 	m_textFile = filename;
 	// set the pointer to the stateManager
 	m_stateManager = stateManager;
+	// initialize variables (these are currently temporary variables)
+	testCharacterSprite = new Sprite();
+	testCharacter = new Actor();
 	// Build the new Game State
 	BuildState();
 }
@@ -467,7 +476,7 @@ void GameStartState::InputCallBack(bool pressed, GameActions action)
 {
 	if (pressed)
 	{
-		/*if (action == DirectionMoveLeft)
+		if (action == DirectionMoveLeft)
 		{
 			testWorld->GetCurrentMap()->UpdateMapVelocity("X", -1.0f);
 		}
@@ -485,7 +494,7 @@ void GameStartState::InputCallBack(bool pressed, GameActions action)
 		if (action == DirectionMoveDown)
 		{
 			testWorld->GetCurrentMap()->UpdateMapVelocity("Y", 1.0f);
-		}*/
+		}
 		if (action == SystemConsole)
 		{
 			//box->DisplayToScreen();
@@ -515,14 +524,14 @@ void GameStartState::SetupInput()
 
 void GameStartState::Update(float delta)
 {
-	//testWorld->UpdateCurrentMap(delta);
+	testWorld->UpdateCurrentMap(delta);
 }
 
 void GameStartState::Execute()
 {
-	//testWorld->RenderCurrentMap();
+	testWorld->RenderCurrentMap();
 	//box->DisplayDialogBox();
-	box->BuildDialogBox();
+	//box->BuildDialogBox();
 }
 
 void GameStartState::OnEnter()
@@ -537,7 +546,8 @@ void GameStartState::OnExit()
 
 CoreGameState::CoreGameState()
 {
-	// default constructor left blank currently
+	// initialize temporary variables
+	m_currentWorld = new GameWorld();
 }
 
 CoreGameState::CoreGameState(GameStateManager *stateManager, string filename)
@@ -546,6 +556,8 @@ CoreGameState::CoreGameState(GameStateManager *stateManager, string filename)
 	m_textFile = filename;
 	// set the pointer to the stateManager
 	m_stateManager = stateManager;
+	// initialize temporary variables
+	m_currentWorld = new GameWorld();
 	// Build the new Game State
 	BuildState();
 }
@@ -635,14 +647,13 @@ void CoreGameState::OnExit()
 
 GameStateManager::GameStateManager()
 {
-	// left blank for now
-	// TODO: Figure out if this method needs anything
+	// set a default value for currentState
+	m_currentState = nullptr;
 }
 
 GameStateManager::~GameStateManager()
 {
-	// left blank for now
-	// TODO: Figure out if this method needs anything
+
 }
 
 void GameStateManager::ChangeState(string state)

@@ -8,6 +8,12 @@ $Creator: Jamie Cooper
 #define EVENTMANAGER_H
 #include "Includes.h"
 
+class Event
+{
+	protected:
+		virtual ~Event();
+};
+
 class Subject
 {
 	protected:
@@ -23,4 +29,19 @@ class Observer
 	public:
 
 };
+
+template<class T>
+bool TryHandleEvent(const Event* event)
+{
+	if (const T* event = dynamic_cast<const T*>(event))
+	{
+		return HandleEvent(event);
+	}
+	return false;
+}
+
+void OnEvent(const Event* event)
+{
+
+}
 #endif // !EVENTMANAGER_H

@@ -6,6 +6,7 @@ $Creator: Jamie Cooper
 #include "RenderManager.h"
 
 RenderManager::RenderManager()
+	:m_gameWidth(0), m_gameHeight(0)
 {
 	m_RenderReady = false;
 #if _WIN32
